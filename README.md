@@ -96,4 +96,4 @@ public/
 
 **Zwelihle Vezokuhle**
 University of Zululand
-Bachelor Commerce in Management Information Systems
+Bachelor of Commerce in Management Information Systems
