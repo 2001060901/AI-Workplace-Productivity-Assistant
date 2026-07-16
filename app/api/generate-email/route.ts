@@ -1,41 +1,32 @@
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY!,
-  baseURL: "https://openrouter.ai/api/v1",
-});
-
 export async function POST(req: Request) {
   try {
     const { prompt } = await req.json();
 
-    const completion = await client.chat.completions.create({
-      model: "tencent/hunyuan-hy3:free",
+    const email = `
+Subject: ${prompt.split("\n")[2] || "Professional Email"}
 
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an AI workplace productivity assistant that writes professional emails.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
+Dear Sir/Madam,
 
-      max_tokens: 300,
-    });
+I hope you are doing well.
+
+I am writing regarding ${prompt
+      .replace(/\n/g, " ")
+      .substring(0, 100)}.
+
+Thank you for your time and consideration. Please let me know if you require any additional information.
+
+Kind regards,
+
+Your Name
+`;
 
     return Response.json({
-      text: completion.choices[0].message.content,
+      text: email,
     });
-  } catch (error: any) {
-    console.error("OpenRouter:", error);
-
+  } catch (error) {
     return Response.json(
       {
-        error: error.message,
+        error: "Failed to generate email.",
       },
       {
         status: 500,
